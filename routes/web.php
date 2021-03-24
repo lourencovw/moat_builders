@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\AlbumController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,8 +19,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('artists', [ArtistController::class, 'create'])
+    ->middleware(['auth'])->name('artists.create');
 
-require __DIR__.'/auth.php';
+Route::get('albums', [AlbumController::class, 'create'])
+    ->middleware(['auth'])->name('albums.create');
+
+Route::post('albums', [AlbumController::class, 'store'])
+    ->middleware(['auth'])->name('albums.store');
+
+Route::delete('albums/{album}', [AlbumController::class, 'destroy'])
+    ->middleware(['auth', 'admin'])->name('albums.destroy');;
+
+require __DIR__ . '/auth.php';
